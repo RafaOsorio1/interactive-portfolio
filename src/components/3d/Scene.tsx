@@ -1,7 +1,21 @@
-import { useRef, useMemo } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { Float, Sphere, MeshDistortMaterial, Points, PointMaterial } from '@react-three/drei';
-import * as THREE from 'three';
+import {
+  Float,
+  MeshDistortMaterial,
+  PointMaterial,
+  Points,
+  Sphere,
+} from "@react-three/drei";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { useRef } from "react";
+import * as THREE from "three";
+
+const count = 2000;
+const particles = new Float32Array(count * 3);
+for (let i = 0; i < count; i++) {
+  particles[i * 3] = (Math.random() - 0.5) * 15;
+  particles[i * 3 + 1] = (Math.random() - 0.5) * 15;
+  particles[i * 3 + 2] = (Math.random() - 0.5) * 15;
+}
 
 const DataNode = () => {
   const meshRef = useRef<THREE.Mesh>(null);
@@ -18,23 +32,12 @@ const DataNode = () => {
     }
   });
 
-  const particles = useMemo(() => {
-    const count = 2000;
-    const positions = new Float32Array(count * 3);
-    for (let i = 0; i < count; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 15;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 15;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 15;
-    }
-    return positions;
-  }, []);
-
   return (
     <>
       <ambientLight intensity={1} />
       <pointLight position={[10, 10, 10]} intensity={2} />
       <pointLight position={[-10, -10, -10]} intensity={1} color="#3b82f6" />
-      
+
       <Float speed={3} rotationIntensity={0.5} floatIntensity={2}>
         <Sphere ref={meshRef} args={[1.4, 64, 64]}>
           <MeshDistortMaterial
@@ -48,7 +51,12 @@ const DataNode = () => {
         </Sphere>
       </Float>
 
-      <Points ref={pointsRef} positions={particles} stride={3} frustumCulled={false}>
+      <Points
+        ref={pointsRef}
+        positions={particles}
+        stride={3}
+        frustumCulled={false}
+      >
         <PointMaterial
           transparent
           color="#ffffff"
@@ -64,21 +72,23 @@ const DataNode = () => {
 
 export const Scene = () => {
   return (
-    <div style={{ 
-      position: 'fixed', 
-      top: 0, 
-      left: 0, 
-      width: '100vw', 
-      height: '100vh', 
-      zIndex: -1,
-      background: '#050505',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
-    }}>
-      <Canvas 
+    <div
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100vw",
+        height: "100vh",
+        zIndex: -1,
+        background: "#050505",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Canvas
         camera={{ position: [0, 0, 5], fov: 75 }}
-        style={{ width: '100%', height: '100%' }}
+        style={{ width: "100%", height: "100%" }}
       >
         <DataNode />
       </Canvas>
