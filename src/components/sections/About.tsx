@@ -5,8 +5,7 @@ import styles from "./BentoGrid.module.css";
 
 export const About = () => {
   const { t } = useLanguage();
-  const { repos, commits, mainStack, loading } =
-    useGitHubStats("Rafael-Rodelo");
+  const { repos, commits, mainStack, loading } = useGitHubStats();
 
   const githubStats = [
     { label: t.about.github.commits, value: loading ? "..." : commits },
@@ -77,7 +76,7 @@ export const About = () => {
                     className={styles.statValue}
                     initial={{ scale: 0.5 }}
                     animate={{ scale: 1 }}
-                    key={stat.value}
+                    key={String(stat.value)}
                   >
                     {stat.value}
                   </motion.span>

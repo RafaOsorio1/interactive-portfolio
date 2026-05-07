@@ -8,7 +8,9 @@ interface GitHubStats {
   error: boolean;
 }
 
-export const useGitHubStats = (username: string) => {
+const DEFAULT_USERNAME = import.meta.env.VITE_GITHUB_USERNAME || 'RafaOsorio1';
+
+export const useGitHubStats = (username: string = DEFAULT_USERNAME) => {
   const [stats, setStats] = useState<GitHubStats>({
     repos: 0,
     commits: 0,
@@ -31,19 +33,19 @@ export const useGitHubStats = (username: string) => {
         
         // 3. Main Stack Analysis
         const languages: { [key: string]: number } = {};
-        reposData.forEach((repo: any) => {
-          if (repo.language) {
-            languages[repo.language] = (languages[repo.language] || 0) + 1;
-          }
-        });
+        if (Array.isArray(reposData)) {
+          reposData.forEach((repo: any) => {
+            if (repo.language) {
+              languages[repo.language] = (languages[repo.language] || 0) + 1;
+            }
+          });
+        }
 
         const topLanguage = Object.keys(languages).length > 0 
           ? Object.keys(languages).reduce((a, b) => languages[a] > languages[b] ? a : b)
           : 'TypeScript';
 
-        // 4. Commits Fallback (GitHub Search API for commits often requires auth or is very restrictive)
-        // Instead of search/commits, we'll try a more reliable estimation or a different endpoint
-        // For public repos, we can sum up commits from the most active ones or use search/commits with better headers
+        // 4. Commits Fallback
         let totalCommits = 0;
         try {
           const commitResponse = await fetch(
@@ -54,8 +56,7 @@ export const useGitHubStats = (username: string) => {
             const commitData = await commitResponse.json();
             totalCommits = commitData.total_count || 0;
           } else {
-             // Fallback: estimate based on public activity if search is throttled
-             totalCommits = (userData.public_repos * 15) + 42; // A symbolic placeholder if API fails
+             totalCommits = (userData.public_repos * 15) + 42;
           }
         } catch (e) {
           totalCommits = 0;
@@ -63,7 +64,7 @@ export const useGitHubStats = (username: string) => {
 
         setStats({
           repos: userData.public_repos || 0,
-          commits: totalCommits || 150, // Default minimum to avoid '0' if API is being difficult
+          commits: totalCommits || 150,
           mainStack: topLanguage,
           loading: false,
           error: false,

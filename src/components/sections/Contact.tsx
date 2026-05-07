@@ -9,30 +9,33 @@ export const Contact = () => {
     "idle" | "sending" | "success" | "error"
   >("idle");
 
+  const contactEmail =
+    import.meta.env.VITE_CONTACT_EMAIL || "tuemail@ejemplo.com";
+  const linkedinUrl = import.meta.env.VITE_LINKEDIN_URL || "#";
+  const githubUrl = import.meta.env.VITE_GITHUB_URL || "#";
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus("sending");
 
     const formData = new FormData(e.currentTarget);
 
-    // Add Web3Forms Access Key (User will need to replace this with their own free key)
-    formData.append("access_key", "YOUR_ACCESS_KEY_HERE");
-
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
+      const response = await fetch("/", {
         method: "POST",
-        body: formData,
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        body: new URLSearchParams(formData as any).toString(),
       });
 
-      const data = await response.json();
-
-      if (data.success) {
+      if (response.ok) {
         setStatus("success");
         (e.target as HTMLFormElement).reset();
       } else {
         setStatus("error");
       }
-    } catch {
+    } catch (error) {
+      console.error(error);
       setStatus("error");
     }
   };
@@ -61,11 +64,16 @@ export const Contact = () => {
         <motion.form
           className={styles.contactForm}
           onSubmit={handleSubmit}
+          name="contact"
+          method="POST"
+          data-netlify="true"
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
         >
+          <input type="hidden" name="form-name" value="contact" />
+
           <div className={styles.inputGroup}>
             <label htmlFor="name">{t.contact.form.name}</label>
             <input
@@ -139,19 +147,23 @@ export const Contact = () => {
           }}
         >
           <a
-            href="mailto:tuemail@ejemplo.com"
+            href={`mailto:${contactEmail}`}
             style={{ color: "var(--accent-color)", textDecoration: "none" }}
           >
             {t.contact.email}
           </a>
           <a
-            href="#"
+            href={linkedinUrl}
+            target="_blank"
+            rel="noopener noreferrer"
             style={{ color: "var(--accent-color)", textDecoration: "none" }}
           >
             LinkedIn
           </a>
           <a
-            href="#"
+            href={githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
             style={{ color: "var(--accent-color)", textDecoration: "none" }}
           >
             GitHub
