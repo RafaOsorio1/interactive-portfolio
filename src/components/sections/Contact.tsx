@@ -67,12 +67,16 @@ export const Contact = () => {
           name="contact"
           method="POST"
           data-netlify="true"
+          netlify-honeypot="bot-field"
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
         >
           <input type="hidden" name="form-name" value="contact" />
+          <p style={{ display: 'none' }}>
+            <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
+          </p>
 
           <div className={styles.inputGroup}>
             <label htmlFor="name">{t.contact.form.name}</label>
