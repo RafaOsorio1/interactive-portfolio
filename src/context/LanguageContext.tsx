@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import { createContext, type ReactNode, useContext, useState } from "react";
 
 type Language = "en" | "es";
 
@@ -202,9 +202,11 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useLanguage = () => {
   const context = useContext(LanguageContext);
-  if (!context)
+  if (!context) {
     throw new Error("useLanguage must be used within a LanguageProvider");
+  }
   return context;
 };
