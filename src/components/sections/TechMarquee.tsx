@@ -1,36 +1,18 @@
-import styles from "./TechMarquee.module.css";
-
-const techStack = [
-  { name: "React", logo: "https://cdn.simpleicons.org/react/61DAFB" },
-  { name: "Node.js", logo: "https://cdn.simpleicons.org/nodedotjs/339933" },
-  { name: "TypeScript", logo: "https://cdn.simpleicons.org/typescript/3178C6" },
-  { name: "Next.js", logo: "https://cdn.simpleicons.org/nextdotjs/ffffff" },
-  { name: "Docker", logo: "https://cdn.simpleicons.org/docker/2496ED" },
-  { name: "Kubernetes", logo: "https://cdn.simpleicons.org/kubernetes/326CE5" },
-  { name: "Azure", logo: "https://cdn.simpleicons.org/microsoftazure/0078D4" },
-  { name: "PostgreSQL", logo: "https://cdn.simpleicons.org/postgresql/4169E1" },
-  { name: "Tailwind", logo: "https://cdn.simpleicons.org/tailwindcss/06B6D4" },
-  { name: "Express", logo: "https://cdn.simpleicons.org/express/ffffff" },
-  { name: "Socket.io", logo: "https://cdn.simpleicons.org/socketdotio/ffffff" },
-  { name: "Prisma", logo: "https://cdn.simpleicons.org/prisma/ffffff" },
+const skills = [
+  'React', 'Next.js', 'TypeScript', 'Node.js', 'Tailwind',
+  'Three.js', 'Framer Motion', 'PostgreSQL', 'Docker', 'AWS',
+  'GraphQL', 'Vite', 'Git', 'Prisma', 'Redux'
 ];
 
 export const TechMarquee = () => {
-  const duplicatedStack = [...techStack, ...techStack, ...techStack]; // Triple for smoother long scroll
-
   return (
-    <div className={styles.marqueeContainer}>
-      <div className={styles.marqueeContent}>
-        {duplicatedStack.map((tech, index) => (
-          <div key={index} className={styles.techItem}>
-            <img
-              src={tech.logo}
-              alt={tech.name}
-              className={styles.logo}
-              loading="lazy"
-            />
-            <span>{tech.name}</span>
-          </div>
+    <div className="relative flex overflow-x-hidden border-y border-white/5 py-4 bg-white/[0.02] backdrop-blur-sm">
+      <div className="animate-marquee whitespace-nowrap flex items-center">
+        {Array(4).fill(skills).flat().map((skill, index) => (
+          <span key={index} className="mx-8 text-sm font-mono font-medium text-zinc-500 uppercase tracking-widest flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-accent/40" />
+            {skill}
+          </span>
         ))}
       </div>
     </div>

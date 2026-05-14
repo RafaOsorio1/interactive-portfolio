@@ -1,177 +1,100 @@
-import { motion } from "framer-motion";
-import { useState } from "react";
-import { useLanguage } from "../../context/LanguageContext";
-import styles from "./Contact.module.css";
+import { useLanguage } from '../../context/LanguageContext';
+import { Mail, GitFork, User, Send } from 'lucide-react';
 
 export const Contact = () => {
   const { t } = useLanguage();
-  const [status, setStatus] = useState<
-    "idle" | "sending" | "success" | "error"
-  >("idle");
-
-  const contactEmail =
-    import.meta.env.VITE_CONTACT_EMAIL || "tuemail@ejemplo.com";
-  const linkedinUrl = import.meta.env.VITE_LINKEDIN_URL || "#";
-  const githubUrl = import.meta.env.VITE_GITHUB_URL || "#";
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setStatus("sending");
-
-    const formData = new FormData(e.currentTarget);
-
-    try {
-      const response = await fetch("/", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        body: new URLSearchParams(formData as any).toString(),
-      });
-
-      if (response.ok) {
-        setStatus("success");
-        (e.target as HTMLFormElement).reset();
-      } else {
-        setStatus("error");
-      }
-    } catch (error) {
-      console.error(error);
-      setStatus("error");
-    }
-  };
 
   return (
-    <section id="contact">
-      <div className="container" style={{ textAlign: "center" }}>
-        <motion.h2
-          className="sectionTitle"
-          style={{ textAlign: "center" }}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          {t.contact.title}
-        </motion.h2>
-        <motion.p
-          style={{ color: "var(--text-secondary)" }}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-        >
-          {t.contact.subtitle}
-        </motion.p>
+    <section id="contact" className="py-32 relative overflow-hidden">
+      {/* Decorative Blob */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[120px] pointer-events-none" />
 
-        <motion.form
-          className={styles.contactForm}
-          onSubmit={handleSubmit}
-          name="contact"
-          method="POST"
-          data-netlify="true"
-          netlify-honeypot="bot-field"
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-        >
-          <input type="hidden" name="form-name" value="contact" />
-          <p style={{ display: 'none' }}>
-            <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
-          </p>
+      <div className="container relative z-10">
+        <div className="max-w-5xl mx-auto glass-card overflow-hidden">
+          <div className="grid grid-cols-1 md:grid-cols-2">
+            {/* Contact Info */}
+            <div className="p-12 bg-white/[0.02] border-r border-white/5 flex flex-col justify-between">
+              <div>
+                <h2 className="text-4xl font-bold mb-6 tracking-tight">{t.contact.title}</h2>
+                <p className="text-zinc-400 text-lg leading-relaxed mb-12">
+                  Looking for a senior developer to build your next high-impact product? Let's discuss your vision and how I can help.
+                </p>
 
-          <div className={styles.inputGroup}>
-            <label htmlFor="name">{t.contact.form.name}</label>
-            <input
-              type="text"
-              name="name"
-              id="name"
-              required
-              placeholder="Rafael Rodelo"
-            />
+                <div className="space-y-6">
+                  <a href="mailto:hello@example.com" className="flex items-center gap-4 group text-zinc-300 hover:text-white transition-colors">
+                    <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-accent/20 group-hover:text-accent transition-all">
+                      <Mail size={20} />
+                    </div>
+                    <span className="font-medium">hello@example.com</span>
+                  </a>
+                  <div className="flex gap-4 pt-6">
+                    {[
+                      { icon: <GitFork size={20} />, href: '#' },
+                      { icon: <User size={20} />, href: '#' }
+                    ].map((social, i) => (
+                      <a
+                        key={i}
+                        href={social.href}
+                        className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center hover:bg-white/10 hover:border-white/20 border border-transparent transition-all"
+                      >
+                        {social.icon}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-12 pt-12 border-t border-white/5">
+                <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-[0.2em]">Based in Panama · Remote Worldwide</p>
+              </div>
+            </div>
+
+            {/* Form Area */}
+            <div className="p-12">
+              <form
+                name="contact"
+                method="POST"
+                data-netlify="true"
+                className="space-y-6"
+              >
+                <input type="hidden" name="form-name" value="contact" />
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 ml-1">{t.contact.form.name}</label>
+                  <input
+                    type="text"
+                    name="name"
+                    required
+                    placeholder="John Doe"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/50 transition-all text-white placeholder:text-zinc-600"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 ml-1">{t.contact.form.email}</label>
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    placeholder="john@example.com"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/50 transition-all text-white placeholder:text-zinc-600"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 ml-1">{t.contact.form.message}</label>
+                  <textarea
+                    name="message"
+                    required
+                    rows={4}
+                    placeholder="Tell me about your project..."
+                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/50 transition-all text-white placeholder:text-zinc-600 resize-none"
+                  />
+                </div>
+                <button type="submit" className="w-full premium-button py-4 flex items-center justify-center gap-2 group">
+                  {t.contact.form.send}
+                  <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                </button>
+              </form>
+            </div>
           </div>
-
-          <div className={styles.inputGroup}>
-            <label htmlFor="email">{t.contact.form.email}</label>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              required
-              placeholder="rafael@example.com"
-            />
-          </div>
-
-          <div className={styles.inputGroup}>
-            <label htmlFor="message">{t.contact.form.message}</label>
-            <textarea
-              name="message"
-              id="message"
-              rows={5}
-              required
-              placeholder="..."
-            />
-          </div>
-
-          <button
-            type="submit"
-            className={styles.submitBtn}
-            disabled={status === "sending"}
-          >
-            {status === "sending"
-              ? t.contact.form.sending
-              : t.contact.form.send}
-          </button>
-
-          {status === "success" && (
-            <motion.div
-              className={`${styles.statusMsg} ${styles.success}`}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-            >
-              {t.contact.form.success}
-            </motion.div>
-          )}
-
-          {status === "error" && (
-            <motion.div
-              className={`${styles.statusMsg} ${styles.error}`}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-            >
-              {t.contact.form.error}
-            </motion.div>
-          )}
-        </motion.form>
-
-        <div
-          style={{
-            marginTop: "40px",
-            display: "flex",
-            gap: "20px",
-            justifyContent: "center",
-          }}
-        >
-          <a
-            href={`mailto:${contactEmail}`}
-            style={{ color: "var(--accent-color)", textDecoration: "none" }}
-          >
-            {t.contact.email}
-          </a>
-          <a
-            href={linkedinUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: "var(--accent-color)", textDecoration: "none" }}
-          >
-            LinkedIn
-          </a>
-          <a
-            href={githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: "var(--accent-color)", textDecoration: "none" }}
-          >
-            GitHub
-          </a>
         </div>
       </div>
     </section>
