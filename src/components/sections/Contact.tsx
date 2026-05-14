@@ -1,96 +1,118 @@
 import { useLanguage } from '../../context/LanguageContext';
-import { Mail, GitFork, User, Send } from 'lucide-react';
+import { Mail, GitFork, User, Send, Target } from 'lucide-react';
 
 export const Contact = () => {
   const { t } = useLanguage();
 
   return (
-    <section id="contact" className="py-32 relative overflow-hidden">
-      {/* Decorative Blob */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[120px] pointer-events-none" />
+    <section id="contact" className="py-40 bg-black relative border-t border-hud-border">
+      <div className="hud-container">
+        <div className="max-w-6xl mx-auto hud-border bg-hud-accent/[0.02]">
+          <div className="hud-corner-tl" />
+          <div className="hud-corner-tr" />
+          <div className="hud-corner-bl" />
+          <div className="hud-corner-br" />
 
-      <div className="container relative z-10">
-        <div className="max-w-5xl mx-auto glass-card overflow-hidden">
-          <div className="grid grid-cols-1 md:grid-cols-2">
-            {/* Contact Info */}
-            <div className="p-12 bg-white/[0.02] border-r border-white/5 flex flex-col justify-between">
-              <div>
-                <h2 className="text-4xl font-bold mb-6 tracking-tight">{t.contact.title}</h2>
-                <p className="text-zinc-400 text-lg leading-relaxed mb-12">
-                  Looking for a senior developer to build your next high-impact product? Let's discuss your vision and how I can help.
-                </p>
+          <div className="grid grid-cols-1 lg:grid-cols-2">
+            {/* Intel Briefing */}
+            <div className="p-16 border-r border-hud-border bg-white/[0.01]">
+              <div className="flex items-center gap-4 mb-10">
+                <Target className="text-hud-warning animate-pulse" size={32} />
+                <h2 className="text-5xl font-black italic tracking-tighter uppercase">{t.contact.title}</h2>
+              </div>
 
-                <div className="space-y-6">
-                  <a href="mailto:hello@example.com" className="flex items-center gap-4 group text-zinc-300 hover:text-white transition-colors">
-                    <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-accent/20 group-hover:text-accent transition-all">
-                      <Mail size={20} />
-                    </div>
-                    <span className="font-medium">hello@example.com</span>
-                  </a>
-                  <div className="flex gap-4 pt-6">
-                    {[
-                      { icon: <GitFork size={20} />, href: '#' },
-                      { icon: <User size={20} />, href: '#' }
-                    ].map((social, i) => (
-                      <a
-                        key={i}
-                        href={social.href}
-                        className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center hover:bg-white/10 hover:border-white/20 border border-transparent transition-all"
-                      >
-                        {social.icon}
-                      </a>
-                    ))}
+              <p className="text-hud-muted text-sm leading-relaxed uppercase italic mb-12 border-l-2 border-hud-warning pl-6">
+                [COMM_CHANNEL_INIT]: Searching for high-impact collaborators.
+                Systems are primed for secure data exchange.
+                Encryption levels: Optimal.
+              </p>
+
+              <div className="space-y-8">
+                <a href="mailto:hello@example.com" className="group flex items-center gap-6 text-hud-text hover:text-hud-accent transition-colors">
+                  <div className="w-14 h-14 border border-hud-border flex items-center justify-center group-hover:border-hud-accent transition-all">
+                    <Mail size={24} />
                   </div>
+                  <div className="flex flex-col">
+                    <span className="telemetry-text">Email_Address</span>
+                    <span className="font-bold font-mono">HELLO@DEV_SYSTEM.IO</span>
+                  </div>
+                </a>
+
+                <div className="flex gap-6 pt-10">
+                  {[
+                    { icon: <GitFork size={20} />, label: "GITHUB_MOD" },
+                    { icon: <User size={20} />, label: "LINKED_MOD" }
+                  ].map((social, i) => (
+                    <a key={i} href="#" className="flex flex-col items-center gap-2 group">
+                      <div className="w-16 h-16 border border-hud-border flex items-center justify-center group-hover:bg-hud-accent group-hover:text-black transition-all">
+                        {social.icon}
+                      </div>
+                      <span className="text-[8px] text-hud-muted group-hover:text-hud-accent">{social.label}</span>
+                    </a>
+                  ))}
                 </div>
               </div>
 
-              <div className="mt-12 pt-12 border-t border-white/5">
-                <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-[0.2em]">Based in Panama · Remote Worldwide</p>
+              <div className="mt-20 flex items-center gap-4">
+                <div className="w-3 h-3 bg-hud-warning rounded-full" />
+                <span className="telemetry-text text-hud-warning animate-pulse">Transmission Ready</span>
               </div>
             </div>
 
-            {/* Form Area */}
-            <div className="p-12">
+            {/* Tactical Input Form */}
+            <div className="p-16">
               <form
                 name="contact"
                 method="POST"
                 data-netlify="true"
-                className="space-y-6"
+                className="space-y-10"
               >
                 <input type="hidden" name="form-name" value="contact" />
-                <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 ml-1">{t.contact.form.name}</label>
+
+                <div className="space-y-4">
+                  <div className="flex justify-between telemetry-text">
+                    <label>01_Sender_Identity</label>
+                    <span className="text-hud-accent">[INPUT_REQ]</span>
+                  </div>
                   <input
                     type="text"
                     name="name"
                     required
-                    placeholder="John Doe"
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/50 transition-all text-white placeholder:text-zinc-600"
+                    className="w-full bg-black border border-hud-border p-4 focus:border-hud-accent focus:outline-none telemetry-text text-hud-text placeholder:text-hud-muted/30"
+                    placeholder="Enter identification..."
                   />
                 </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 ml-1">{t.contact.form.email}</label>
+
+                <div className="space-y-4">
+                  <div className="flex justify-between telemetry-text">
+                    <label>02_Return_Frequency</label>
+                    <span className="text-hud-accent">[INPUT_REQ]</span>
+                  </div>
                   <input
                     type="email"
                     name="email"
                     required
-                    placeholder="john@example.com"
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/50 transition-all text-white placeholder:text-zinc-600"
+                    className="w-full bg-black border border-hud-border p-4 focus:border-hud-accent focus:outline-none telemetry-text text-hud-text placeholder:text-hud-muted/30"
+                    placeholder="Enter return email..."
                   />
                 </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 ml-1">{t.contact.form.message}</label>
+
+                <div className="space-y-4">
+                  <div className="flex justify-between telemetry-text">
+                    <label>03_Mission_Brief</label>
+                    <span className="text-hud-warning">[DATA_ENCRYPTED]</span>
+                  </div>
                   <textarea
                     name="message"
                     required
-                    rows={4}
-                    placeholder="Tell me about your project..."
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/50 transition-all text-white placeholder:text-zinc-600 resize-none"
+                    rows={5}
+                    className="w-full bg-black border border-hud-border p-4 focus:border-hud-accent focus:outline-none telemetry-text text-hud-text placeholder:text-hud-muted/30 resize-none"
+                    placeholder="Initiate mission details..."
                   />
                 </div>
-                <button type="submit" className="w-full premium-button py-4 flex items-center justify-center gap-2 group">
-                  {t.contact.form.send}
-                  <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+
+                <button type="submit" className="hud-button w-full py-6 text-lg">
+                  Execute Transmission_ <Send size={18} className="inline ml-2" />
                 </button>
               </form>
             </div>
